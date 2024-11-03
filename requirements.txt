@@ -213,7 +213,7 @@ python-oxmsg==0.0.1
 python-pptx==1.0.0
 pytube==15.0.0
 pytz==2024.2
-pywin32==308
+pywin32==308; sys_platform == "win32"
 pyxlsb==1.0.10
 PyYAML==6.0.2
 qrcode==8.0
