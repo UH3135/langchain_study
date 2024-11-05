@@ -1,16 +1,16 @@
-from chain import chain
-from langchain_teddynote import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from langserve import add_routes
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from pydantic import BaseModel, Field
-from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
-from typing import List, Union
+from typing import List, Union # 변수 형태를 가시적으로 보여줌
+from chain import chain
 
-
+# API 불러오기
 app = FastAPI()
-app.add_middleware(
+# CORS 설정
+app.add_middleware(  
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
@@ -18,9 +18,9 @@ app.add_middleware(
     allow_headers=["*"],
     expose_headers=["*"],
 )
-
+# root를 호출하였을때
 @app.get("/")
-async def redirect_root_to_docs():
+async def redirect_root_to_chat(): # root 대신 chat 화면으로 보내기
     return RedirectResponse("/prompt/playground")
 add_routes(app, chain, path="/prompt")
 
@@ -41,11 +41,7 @@ add_routes(
     playground_type="chat",
 )
 
-logging.langsmith("llm_study")
-
 if __name__ == "__main__":
-    import uvicorn
-    
-    uvicorn.run(app, host="localhost", port=8000)
-    # http://localhost:8000/prompt/playground/
-    # 위 링크에 접속
+    import uvicorn # uvicorn으로 app 실행
+
+    uvicorn.run(app, host="localhost", port=8000) # 로컬로 호스팅
